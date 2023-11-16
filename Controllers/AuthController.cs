@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SampleJWT.Models;
+using SampleJWT.Services;
 
 namespace SampleJWT.Controllers
 {
@@ -16,10 +17,6 @@ namespace SampleJWT.Controllers
         {
             _dbContext = context;
         }
-
-
-
-        private string _secretKey = "your_secret_key_here"; // Replace with your secret key
 
         [HttpPost("/register")]
         public void Register([FromBody] User user)
@@ -37,29 +34,10 @@ namespace SampleJWT.Controllers
             if (dbUser != null)
             {
                 // Generate and return JWT token
-                return GenerateJwtToken(dbUser.Id, dbUser.Username);
+                return JwtTokenGenerator.GenerateJwtToken(dbUser.Id, dbUser.Username);
             }
 
             return "Invalid credentials";
-        } 
-
-        private string GenerateJwtToken(int userId, string username)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secretKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-            }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
     }
 }
