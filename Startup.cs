@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using SampleJWT.Models;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
+
 namespace SampleJWT
 {
     public class Startup
@@ -26,6 +28,10 @@ namespace SampleJWT
             });
 
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sample JWT API", Version = "v1" });
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -51,6 +57,13 @@ namespace SampleJWT
             }
 
             app.UseRouting();
+            // Enable middleware to serve generated Swagger as a JSON endpoint
+            app.UseSwagger();
+            // Enable middleware to serve Swagger UI
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+            });
             app.UseAuthentication();
             app.UseAuthorization();
 
