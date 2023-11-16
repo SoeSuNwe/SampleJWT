@@ -1,5 +1,5 @@
-/bin/
-/obj/
+**/bin/*
+**/obj/*
 .vs/
 .vs/SampleJWT/v17/.suo
 bin/Debug/net6.0/SampleJWT.dll
