@@ -22,7 +22,7 @@ namespace SampleJWT.Services
 
         public async Task<IdentityResult> RegisterUser(RegisterViewModel model)
         {
-            var user = new User { Username = model.UserName, Email = model.Email };
+            var user = new User { UserName = model.UserName, Email = model.Email };
 
             // Note: You would typically hash the password before storing it
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -36,7 +36,7 @@ namespace SampleJWT.Services
 
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var token = JwtTokenGenerator.GenerateJwtToken(user.Id,user.Username);
+                var token = JwtTokenGenerator.GenerateJwtToken(user.Id,user.UserName);
 
                 return new TokenResult
                 {

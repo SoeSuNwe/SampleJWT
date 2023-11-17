@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SampleJWT.Dtos;
 using SampleJWT.Models;
 using SampleJWT.Services;
 
@@ -26,15 +27,15 @@ namespace SampleJWT.Controllers
         }
 
         [HttpPost("/login")]
-        public string Login([FromBody] User user)
+        public string Login([FromBody] LoginViewModel user)
         {
             var dbUser = _dbContext.Users
-              .FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
+              .FirstOrDefault(u => u.UserName == user.UserName && u.Password == user.Password);
 
             if (dbUser != null)
             {
                 // Generate and return JWT token
-                return JwtTokenGenerator.GenerateJwtToken(dbUser.Id, dbUser.Username);
+                return JwtTokenGenerator.GenerateJwtToken(dbUser.Id, dbUser.UserName);
             }
 
             return "Invalid credentials";

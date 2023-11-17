@@ -15,8 +15,8 @@
             // Add sample users
             var users = new User[]
             {
-            new User { Username = "john_doe", Password = "password123" },
-            new User { Username = "jane_smith", Password = "secret456" },
+            new User { UserName = "john_doe", Password = "password123" },
+            new User { UserName = "jane_smith", Password = "secret456" },
                 // Add more sample users as needed
             };
 
